@@ -88,7 +88,7 @@ namespace GatoXAML
                 AnounceWinner(cell);
                 return;
             }
-            if (game.TurnCounter == 9)
+            if (game.CheckForTie())
             {
                 AnnounceTie();
                 return;

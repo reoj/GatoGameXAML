@@ -91,5 +91,7 @@ namespace GatoXAML.Logic
             }
             return sb.ToString();
         }
+
+        internal bool CheckForTie() => TurnCounter == 9;
     }
 }
