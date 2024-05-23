@@ -14,7 +14,13 @@ namespace GatoXAML.Logic
         public int XWins { get; set; }
         public int Ties { get; set; }
         private readonly string[] WinningCombinations = Constants.WINNING_COMBINATIONS;
+        public void IncrementTies() => Ties++;
 
+        public int GetOWins() => OWins;
+
+        public int GetXWins() => XWins;
+
+        public int GetTies() => Ties;
         public Game()
         {
             this.Cells = CreateNewListOfCells();
@@ -114,12 +120,6 @@ namespace GatoXAML.Logic
             OWins++;
         }
 
-        public void IncrementTies() => Ties++;
-
-        public int GetOWins() => OWins;
-
-        public int GetXWins() => XWins;
-
-        public int GetTies() => Ties;
+        
     }
 }

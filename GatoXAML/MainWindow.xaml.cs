@@ -36,6 +36,7 @@ namespace GatoXAML
             InitializeComponent();
             this.GameLogic = new Game();
             this.DataContext = this;
+            OnPropertyChanged(nameof(GameLogic));
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)

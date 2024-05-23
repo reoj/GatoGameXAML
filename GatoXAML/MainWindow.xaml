@@ -41,7 +41,7 @@
                         <TextBlock Grid.Column="0"
                                    Grid.Row="1"
                                    x:Name="XScore"
-                                   Text="{Binding Path=GameLogic.XWins, Mode=TwoWay}"
+                                   Text="{Binding Path=GameLogic.XWins}"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"/>
                         <TextBlock Grid.Column="1"
