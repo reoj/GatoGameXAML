@@ -35,5 +35,16 @@ namespace GatoXAML.Logic
             { "H", 7 },
             { "I", 8 }
         };
+        public static readonly string[] WINNING_COMBINATIONS = new string[]
+        {
+            "012",
+            "345",
+            "678",
+            "036",
+            "147",
+            "258",
+            "048",
+            "246"
+        };
     }
 }

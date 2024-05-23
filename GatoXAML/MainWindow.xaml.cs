@@ -22,16 +22,7 @@ namespace GatoXAML
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        private Game game = new Game();
-        public Game GameLogic
-        {
-            get { return game; }
-            set
-            {
-                game = value;
-                OnPropertyChanged("GameLogic");
-            }
-        }
+        public Game game = new Game();
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -53,13 +44,13 @@ namespace GatoXAML
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
             this.game = new Game();
-            OnPropertyChanged("GameLogic");
+            OnPropertyChanged(nameof(game.Cells));
         }
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
             this.game.Reset();
-            OnPropertyChanged("GameLogic");
+            OnPropertyChanged(nameof(game.Cells));
         }
 
         private void Cell_Click(object sender, RoutedEventArgs e)
@@ -98,14 +89,14 @@ namespace GatoXAML
         private void AnnounceTie()
         {
             MessageBox.Show("It's a tie!");
-            this.game = new Game();
+            this.game.IncrementTies();
             OnPropertyChanged("GameLogic");
         }
 
         private void AnounceWinner(Cell cell)
         {
             MessageBox.Show($"{cell.Player} wins!");
-            this.game = new Game();
+            this.game.RegisterWin(cell.Player);
             OnPropertyChanged("GameLogic");
         }
 

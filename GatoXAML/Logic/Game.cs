@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace GatoXAML.Logic
@@ -8,17 +9,11 @@ namespace GatoXAML.Logic
     {
         public List<Cell> Cells { get; set; }
         public int TurnCounter { get; set; }
-        private static readonly string[] WinningCombinations = new string[]
-        {
-            "012",
-            "345",
-            "678",
-            "036",
-            "147",
-            "258",
-            "048",
-            "246"
-        };
+        public int CurrentPlayer => TurnCounter % 2 == 0 ? 1 : 2;
+        public int OWins { get; set; }
+        public int XWins { get; set; }
+        public int Ties { get; set; }
+        private readonly string[] WinningCombinations = Constants.WINNING_COMBINATIONS;
 
         public Game()
         {
@@ -36,7 +31,7 @@ namespace GatoXAML.Logic
             for (int cellIndex = 0; cellIndex < 9; cellIndex++)
             {
                 var cell = new Cell();
-                cell.Index = cellIndex;
+                cell.SetIndex(cellIndex);
                 Cells.Add(cell);
             }
             return Cells;
@@ -44,7 +39,7 @@ namespace GatoXAML.Logic
 
         public bool CheckForWinner()
         {
-            List<bool> matches = new();
+            List<bool> matches = Enumerable.Range(0, 8).Select(_ => false).ToList();
             if (this.TurnCounter < 5)
             {
                 return false;
@@ -64,24 +59,35 @@ namespace GatoXAML.Logic
 
         private List<Cell> GetActualCellsWithSameIndexAs(string combination)
         {
-            return new List<Cell>
+            List<Cell> actualCells = new();
+            foreach (var character in combination)
             {
-                this.GetCellByIndex(combination[0]),
-                this.GetCellByIndex(combination[1]),
-                this.GetCellByIndex(combination[2])
-            };
+                int value = int.Parse(character.ToString());
+                actualCells.Add(GetCellByIndex(value));
+            }
+            return actualCells;
         }
 
         private Cell GetCellByIndex(int index)
         {
-            this.Cells.Find(cell => cell.Index == index);
-            return this.Cells[0];
+            var foundCell = this.Cells.Find(cell => cell.IndexNum == index);
+            try
+            {
+                return foundCell;
+            }
+            catch (NullReferenceException)
+            {
+                Console.WriteLine($"Cell with index {index} not found.");
+                return null;
+            }
         }
+
         public void Reset()
         {
             this.Cells = CreateNewListOfCells();
             this.TurnCounter = 0;
         }
+
         public override string ToString()
         {
             StringBuilder sb = new();
@@ -93,5 +99,16 @@ namespace GatoXAML.Logic
         }
 
         internal bool CheckForTie() => TurnCounter == 9;
+
+        public void RegisterWin(string forPlayer)
+        {
+            if (forPlayer == Constants.PLAYER_SYMBOLS[1])
+            {
+                XWins++;
+                return;
+            }
+            OWins++;
+        }
+        public void IncrementTies() => Ties++;
     }
 }

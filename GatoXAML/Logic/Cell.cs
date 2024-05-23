@@ -10,7 +10,7 @@ namespace GatoXAML.Logic
             set => IsEmpty = value;
         }
         public string Player { get; set; } = "";
-        public int Index { get; set; }
+        public int IndexNum { get; set; }
 
         public void Mark(string player)
         {
@@ -20,7 +20,10 @@ namespace GatoXAML.Logic
                 Player = player;
             }
         }
-
+        public void SetIndex(int index)
+        {
+            IndexNum = index;
+        }
         public void Clear()
         {
             IsEmpty = true;
@@ -28,7 +31,7 @@ namespace GatoXAML.Logic
         }
         public override string ToString()
         {
-            return $"Cell {Index} is {(IsEmpty ? "Empty" : Player)}";
+            return $"Cell {IndexNum} is {(IsEmpty ? "Empty" : Player)}";
         }
 
     }
