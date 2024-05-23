@@ -22,7 +22,7 @@ namespace GatoXAML
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        public Game game = new Game();
+        public Game GameLogic { get; set; }
 
         public event PropertyChangedEventHandler? PropertyChanged;
 
@@ -34,6 +34,8 @@ namespace GatoXAML
         public MainWindow()
         {
             InitializeComponent();
+            this.GameLogic = new Game();
+            this.DataContext = this;
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -43,21 +45,21 @@ namespace GatoXAML
 
         private void NewGame_Click(object sender, RoutedEventArgs e)
         {
-            this.game = new Game();
-            OnPropertyChanged(nameof(game.Cells));
+            this.GameLogic = new Game();
+            OnPropertyChanged(nameof(GameLogic.Cells));
         }
 
         private void Reset_Click(object sender, RoutedEventArgs e)
         {
-            this.game.Reset();
-            OnPropertyChanged(nameof(game.Cells));
+            this.GameLogic.Reset();
+            OnPropertyChanged(nameof(GameLogic.Cells));
         }
 
         private void Cell_Click(object sender, RoutedEventArgs e)
         {
             Button button = (Button)sender;
             int cellIndex = FindIndexFromName(button.Name);
-            Cell cell = game.Cells[cellIndex];
+            Cell cell = GameLogic.Cells[cellIndex];
 
             if (cell.IsEmpty)
             {
@@ -68,18 +70,18 @@ namespace GatoXAML
         private void MarkCell(Button button, Cell cell)
         {
             cell.Player =
-                game.TurnCounter % 2 == 0
+                GameLogic.TurnCounter % 2 == 0
                     ? Constants.PLAYER_SYMBOLS[1]
                     : Constants.PLAYER_SYMBOLS[2];
             button.Content = cell.Player;
-            game.TurnCounter++;
+            GameLogic.TurnCounter++;
 
-            if (game.CheckForWinner())
+            if (GameLogic.CheckForWinner())
             {
                 AnounceWinner(cell);
                 return;
             }
-            if (game.CheckForTie())
+            if (GameLogic.CheckForTie())
             {
                 AnnounceTie();
                 return;
@@ -89,14 +91,14 @@ namespace GatoXAML
         private void AnnounceTie()
         {
             MessageBox.Show("It's a tie!");
-            this.game.IncrementTies();
+            this.GameLogic.IncrementTies();
             OnPropertyChanged("GameLogic");
         }
 
         private void AnounceWinner(Cell cell)
         {
             MessageBox.Show($"{cell.Player} wins!");
-            this.game.RegisterWin(cell.Player);
+            this.GameLogic.RegisterWin(cell.Player);
             OnPropertyChanged("GameLogic");
         }
 

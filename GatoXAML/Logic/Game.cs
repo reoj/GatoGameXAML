@@ -18,6 +18,10 @@ namespace GatoXAML.Logic
         public Game()
         {
             this.Cells = CreateNewListOfCells();
+            this.TurnCounter = 0;
+            this.OWins = 0;
+            this.XWins = 0;
+            this.Ties = 0;
         }
 
         public int GetCellCount()
@@ -109,6 +113,13 @@ namespace GatoXAML.Logic
             }
             OWins++;
         }
+
         public void IncrementTies() => Ties++;
+
+        public int GetOWins() => OWins;
+
+        public int GetXWins() => XWins;
+
+        public int GetTies() => Ties;
     }
 }
